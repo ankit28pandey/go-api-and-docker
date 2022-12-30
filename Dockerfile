@@ -1,13 +1,15 @@
-FROM golang:1.18-bullseye
+FROM golang:1.16-alpine
 
-RUN go install github.com/beego/bee/v2@latest
+WORKDIR /app
 
-ENV GO111MODULE=on
-ENV GOFLAGS=-mod=vendor
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
 
-ENV APP_HOME /go/src/mathapp
-RUN mkdir -p "$APP_HOME"
+COPY *.go ./
 
-WORKDIR "$APP_HOME"
-EXPOSE 8010
-CMD ["bee", "run"]
+RUN go build -o /docker-gs-ping
+
+EXPOSE 8000
+
+CMD [ "/docker-gs-ping" ]
