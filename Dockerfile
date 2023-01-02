@@ -4,4 +4,4 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 COPY . .
 EXPOSE 8010
-CMD ["app"]
+CMD ["go", "run", "main.go"]
